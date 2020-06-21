@@ -10,6 +10,8 @@ The default offset of -200 will likely be fine for most use cases. A campfire so
 However, if you are not satisfied with this offset, each client can modify it for themselves.
 Please see the video below on how to zero in on the correct offset for your client.
 
+The testsounds are only to help with configuration changes. Once your config is changed, all of your ambientsounds, including ones already placed, should use the new offset, hopefully without the need for a refresh.
+
 [![Better Ambient Loop configuration tutorial](https://img.youtube.com/vi/5d1RPn9qu3s/0.jpg)](https://www.youtube.com/watch?v=5d1RPn9qu3s)
 
 ## Basic configuration
@@ -26,7 +28,7 @@ If the default offset isn't quite doing it for you, you can configure it yoursel
 4. Open your module settings > Better Ambient Loop
 5. Tweak the `Audio sprite end offset`
 6. Save
-7. Repeat
+7. Repeat 4-6 until satisfied
 
 This should be a fairly simple way to find a decent offset. Remember that each client has their own offset, so if you want to try and get things working as well as possible, it may be worth setting up a test scene with one of these sounds and running your players through the config.
 
