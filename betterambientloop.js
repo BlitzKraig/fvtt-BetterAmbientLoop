@@ -32,6 +32,7 @@ Hooks.on("init", () => {
         type: Boolean,
         onChange: value => {
             if (value) {
+                BetterAmbientLoop.hasShownError = false;
                 BetterAmbientLoop.updateAllAmbientSoundOffsets(game.settings.get("BetterAmbientLoop", "offset"));
             } else {
                 BetterAmbientLoop.updateAllAmbientSoundOffsets(0);
@@ -52,6 +53,7 @@ Hooks.on("init", () => {
         default: -200,
         onChange: value => {
             if (game.settings.get("BetterAmbientLoop", "enabled")) {
+                BetterAmbientLoop.hasShownError = false;
                 BetterAmbientLoop.updateAllAmbientSoundOffsets(value);
             }
         }
@@ -82,29 +84,74 @@ Hooks.on("init", () => {
         },
         default: 200
     });
+    game.settings.register("BetterAmbientLoop", "hasShownNonChromeMessage", {
+        name: "NonChrome Message Shown",
+        scope: "client",
+        config: false,
+        default: false,
+        type: Boolean
+    });
 });
 
 Hooks.on("canvasReady", (canvas) => {
+    if (!game.settings.get("BetterAmbientLoop", "hasShownNonChromeMessage") && navigator.userAgent.indexOf('Chrome') < 0) {
+        game.settings.set("BetterAmbientLoop", "hasShownNonChromeMessage", true);
+        new Dialog({
+            title: "Better Ambient Loop - Browser Compatibility",
+            content: "<p>Better Ambient Loop works best in Chrome.</p><p>Firefox will always have a slight clip of silence, and other browsers have not been tested</p><p>You will only see this message once. Please consider using Chrome.</p>",
+            buttons: {
+                ok: {
+                    icon: '<i class="fas fa-check"></i>',
+                    label: "Ok"
+                }
+            },
+            default: "ok"
+        }).render(true);
+    }
     if (game.settings.get("BetterAmbientLoop", "enabled")) {
         setTimeout(() => BetterAmbientLoop.updateAllAmbientSoundOffsets(game.settings.get("BetterAmbientLoop", "offset")), game.settings.get("BetterAmbientLoop", "startupTimeout") || 500);
     }
 });
 
+const logOffsetTooLow = (msg) => {
+    console.log(`Better Ambient Loop: ${msg}`);
+
+    if (!BetterAmbientLoop.hasShownError) {
+        ui.notifications.error("Better Ambient Loop: Offset is too low for one or more sounds. These sounds have been reset. Please tweak your offset in the module settings.")
+        BetterAmbientLoop.hasShownError = true;
+    }
+}
+
 class BetterAmbientLoop {
+
+    static hasShownError = false;
 
     static async updateAllAmbientSoundOffsets(offsetValue) {
         canvas.sounds.objects.children.forEach(ambientSound => {
             if (ambientSound.howl._sprite.__betterasoriginal) {
-                ambientSound.howl._sprite.__default[1] = ambientSound.howl._sprite.__betterasoriginal[1] + offsetValue;
+                if (ambientSound.howl._sprite.__betterasoriginal[1] + offsetValue > 0) {
+                    ambientSound.howl._sprite.__default[1] = ambientSound.howl._sprite.__betterasoriginal[1] + offsetValue;
+                } else {
+                    logOffsetTooLow(`Offset too low for sound ${ambientSound.data._id}, reverting to original`);
+                    ambientSound.howl._sprite.__default[1] = ambientSound.howl._sprite.__betterasoriginal[1];
+                }
             } else {
-                ambientSound.howl._sprite.__betterasoriginal = JSON.parse(JSON.stringify(ambientSound.howl._sprite.__default));
-                ambientSound.howl._sprite.__default[1] += offsetValue;
+                if (ambientSound.howl._sprite.__default[1] + offsetValue > 0) {
+                    ambientSound.howl._sprite.__betterasoriginal = JSON.parse(JSON.stringify(ambientSound.howl._sprite.__default));
+                    ambientSound.howl._sprite.__default[1] += offsetValue;
+                } else {
+                    logOffsetTooLow(`Offset too low for sound ${ambientSound.data._id}, skipping as not yet set`);
+                }
             }
         });
     }
 
     static async updateSingleAmbientSoundOffset(ambientSoundID) {
-        canvas.sounds.get(ambientSoundID).howl._sprite.__betterasoriginal = JSON.parse(JSON.stringify(canvas.sounds.get(ambientSoundID).howl._sprite.__default));
-        canvas.sounds.get(ambientSoundID).howl._sprite.__default[1] += game.settings.get("BetterAmbientLoop", "offset");
+        if (canvas.sounds.get(ambientSoundID).howl._sprite.__default[1] += game.settings.get("BetterAmbientLoop", "offset") < 0) {
+            canvas.sounds.get(ambientSoundID).howl._sprite.__betterasoriginal = JSON.parse(JSON.stringify(canvas.sounds.get(ambientSoundID).howl._sprite.__default));
+            canvas.sounds.get(ambientSoundID).howl._sprite.__default[1] += game.settings.get("BetterAmbientLoop", "offset");
+        } else {
+            logOffsetTooLow(`Offset too low for sound ${ambientSoundID}, skipping as not yet set`);
+        }
     }
 }
