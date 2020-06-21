@@ -1,0 +1,15 @@
+{
+  "name": "BetterAmbientLoop",
+  "title": "Better Ambient Loop",
+  "description": "Alters the howler soundsprite end point to eliminate the short silence in ambient audio clips",
+  "version": "1.0.0",
+  "author": "Blitzkraig",
+  "scripts": ["./betterambientloop.js"],
+  "styles": [],
+  "packs": [],
+  "minimumCoreVersion": "0.5.3",
+  "compatibleCoreVersion": "0.6.2",
+  "url": "https://github.com/BlitzKraig/fvtt-BetterAmbientLoop",
+  "manifest": "https://raw.githubusercontent.com/BlitzKraig/fvtt-BetterAmbientLoop/master/module.json",
+  "download": "https://github.com/BlitzKraig/fvtt-BetterAmbientLoop/archive/master.zip"
+}
