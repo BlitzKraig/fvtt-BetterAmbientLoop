@@ -2,7 +2,7 @@
   "name": "BetterAmbientLoop",
   "title": "Better Ambient Loop",
   "description": "Alters the howler soundsprite end point to eliminate the short silence in ambient audio clips",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "author": "Blitzkraig",
   "scripts": ["./betterambientloop.js"],
   "styles": [],

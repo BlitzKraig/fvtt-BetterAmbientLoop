@@ -5,7 +5,7 @@ Hooks.on("createAmbientSound", async (scene, ambientAudio) => {
     setTimeout(() => {
         BetterAmbientLoop.updateSingleAmbientSoundOffset(ambientAudio._id);
         console.log("BetterAmbientLoop New sound configured");
-    }, 200);
+    }, game.settings.get("BetterAmbientLoop", "newAudioTimeout"));
 
 });
 
@@ -18,7 +18,7 @@ Hooks.on("updateAmbientSound", async (scene, ambientAudio, changes) => {
         setTimeout(() => {
             BetterAmbientLoop.updateSingleAmbientSoundOffset(ambientAudio._id);
             console.log("BetterAmbientLoop Sound updated");
-        }, 200);
+        }, game.settings.get("BetterAmbientLoop", "newAudioTimeout"));
     }
 });
 
@@ -56,11 +56,37 @@ Hooks.on("init", () => {
             }
         }
     });
+    game.settings.register("BetterAmbientLoop", "startupTimeout", {
+        name: "Timeout before starting",
+        hint: "Since there's no hook for us to grab, we need to wait a short time after canvasReady before trying to update sounds. If you have a large scene and notice Better Ambient Loop isn't working, or you're getting errors, try increasing this timeout and refreshing.",
+        scope: "client",
+        config: true,
+        type: Number,
+        range: {
+            min: 200,
+            max: 10000,
+            step: 10
+        },
+        default: 2000
+    });
+    game.settings.register("BetterAmbientLoop", "newAudioTimeout", {
+        name: "Timeout after creating/updating ambient sound",
+        hint: "Similar to above, but the timeout after creating a sound or changing the sound file. You probably shouldn't ever need to change this, but if you're getting errors after creating a sound then try increasing this",
+        scope: "client",
+        config: true,
+        type: Number,
+        range: {
+            min: 200,
+            max: 5000,
+            step: 10
+        },
+        default: 200
+    });
 });
 
 Hooks.on("canvasReady", (canvas) => {
     if (game.settings.get("BetterAmbientLoop", "enabled")) {
-        setTimeout(() => BetterAmbientLoop.updateAllAmbientSoundOffsets(game.settings.get("BetterAmbientLoop", "offset")), 200);
+        setTimeout(() => BetterAmbientLoop.updateAllAmbientSoundOffsets(game.settings.get("BetterAmbientLoop", "offset")), game.settings.get("BetterAmbientLoop", "startupTimeout") || 500);
     }
 });
 

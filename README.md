@@ -40,6 +40,12 @@ NOTE: This is not a perfect solution, due to the way howler.js works. If your of
 
 ---
 
+## Troubleshooting
+
+If Better Ambient Loop doesn't seem to be doing anything, try increasing your `Timeout before starting` (v1.1+) in the module settings and refreshing.
+
+Since we are unable to tell when the ambient audio is ready, a timeout after `canvasReady` is the simplest workaround I could find.
+
 ## Manifest
 
 `https://raw.githubusercontent.com/BlitzKraig/fvtt-BetterAmbientLoop/master/module.json`
