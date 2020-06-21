@@ -46,6 +46,10 @@ If Better Ambient Loop doesn't seem to be doing anything, try increasing your `T
 
 Since we are unable to tell when the ambient audio is ready, a timeout after `canvasReady` is the simplest workaround I could find.
 
+## Known issues
+
+Firefox will always have a slight clip of silence, even after reducing the end of the sprite. No obvious way to fix this, but my testing has found that things sound much better in Chrome, with an offset of ~ -200
+
 ## Manifest
 
 `https://raw.githubusercontent.com/BlitzKraig/fvtt-BetterAmbientLoop/master/module.json`
