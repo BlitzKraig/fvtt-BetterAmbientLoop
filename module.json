@@ -8,7 +8,7 @@
   "styles": [],
   "packs": [],
   "minimumCoreVersion": "0.5.3",
-  "compatibleCoreVersion": "0.6.2",
+  "compatibleCoreVersion": "0.6.4",
   "url": "https://github.com/BlitzKraig/fvtt-BetterAmbientLoop",
   "manifest": "https://raw.githubusercontent.com/BlitzKraig/fvtt-BetterAmbientLoop/master/module.json",
   "download": "https://github.com/BlitzKraig/fvtt-BetterAmbientLoop/archive/master.zip"
