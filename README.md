@@ -1,5 +1,10 @@
 # Better Ambient Loop
 
+![BetterAmbientLoop Release](https://github.com/BlitzKraig/fvtt-BetterAmbientLoop/workflows/BetterAmbientLoop%20Release/badge.svg)
+![Latest Release Download Count](https://img.shields.io/github/downloads/BlitzKraig/fvtt-BetterAmbientLoop/latest/betterambientloop-release.zip)
+
+[![ko-fi](https://www.ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/Q5Q01YIEJ)
+
 Per-client Ambient Sound improvement, allowing for looping without cuts.
 
 The default Ambient Sounds implementation has some silence between the end of the track and the beginning of the loop. This is a limitation of howler.js, and may only affect some clients.

@@ -1,3 +1,7 @@
+## 1.1.2 - Version compatibility update - 2020/08/03
+* Updated FVTT versions
+* Updated to use build settings
+
 ## 1.1.1 - Browser compat & Error handling - 2020/06/21
 * Added error handling for extreme offsets
 * Added one-time message for non-chrome browsers, as I have confirmed that Firefox will always have silence. Use chrome for the best experience!
